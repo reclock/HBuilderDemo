@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<mata name="apple-mobile-web-app-capable" content="yes"></mata>
+	
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">websql操作示例</h1>
+		</header>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/websql.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div class="content">
+			<br /><br /><br /><br /><br />
+			<div class="websql">
+				<button type="button" onclick="createTable()">新建数据库</button>
+			</div><br />
+			<div class="websql">
+				<!--增 -->
+				<button type="button" onclick="insertData()">插入数据</button>
+			</div><br />
+			<div class="websql">
+				<!--删-->
+				<button type="button" onclick="deleteData()">删除一条数据</button>
+				<button type="button" onclick="deleteAllData()">删除全部数据</button>
+			</div><br />
+			<div class="websql">
+				<!--改-->
+				<button type="button" onclick="updateData()">修改数据</button>
+			</div><br />
+				<!--查 -->
+				<button type="button" onclick="selectData()">查找一条数据</button>
+				<button type="button" onclick="selectAllData()">查找全部数据</button>
+			</div>
+		</div>
+		
+		
+		<script>
+			function createTable(){
+				console.log("创建数据库");
+				var db = websqlOpenDB();
+				if (db) {
+					websqlCreateTable(websqlTable);
+				} else{
+					alert("退出吧");
+				}
+			}
+			
+			function insertData(){
+				console.log("插入数据");
+				
+				var ret =  websqlInsertDataToTable(websqlTable,"小明","18","175cm","60kg");
+				ret = websqlInsertDataToTable(websqlTable,"小红","17","185cm","40kg");
+				ret = websqlInsertDataToTable(websqlTable,"小刚","18","170cm","50kg");
+				ret = websqlInsertDataToTable(websqlTable,"小亮","15","171cm","55kg");
+				alert("插入成功:"+ ret);
+		
+			}
+			function deleteData(){
+				console.log("删除一条数据");
+			}
+			function deleteAllData(){
+				console.log("删除全部数据");
+				websqlDeleteAllDataFromTable(websqlTable);
+			}
+			function updateData(){
+				console.log("修改数据");
+			}
+			function selectData(){
+				console.log("查找一条数据");
+			}
+			function selectAllData(){
+				console.log("查找全部数据");
+				websqlGetAllData(websqlTable);
+			}
+		</script>
+	</body>
+
+</html>
