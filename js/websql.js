@@ -1,4 +1,4 @@
-var dbname = "websql"; //数据库名字
+var dbname = "student"; //数据库名字
 var version='1.0';	//数据库版本
 var dbdesc='websql test'; //数据库描述
 var dbsize=2*1024*1024; //数据库大小
@@ -27,27 +27,29 @@ function websqlOpenDB(){
  * @param {Object} tablename:表单名
  */
 function websqlCreateTable(tablename){
-	var creatTableSQL = 'CREATE TABLE IF  NOT EXISTS '+ tablename + ' (rowid INTEGER PRIMARY KEY AUTOINCREMENT, NAME text,AGE text,HEIGHT text,WEIGTH text)';
+	
+	var creatTableSQL = 'CREATE TABLE IF  NOT EXISTS '+ tablename+' (rowid INTEGER PRIMARY KEY AUTOINCREMENT,NAME,AGE,HEIGHT,WEIGTH)';
 	dataBase.transaction(function(ctx,result){
 		ctx.executeSql(creatTableSQL,[],function(ctx,result){
-			alert("表创建成功 "+tablename);
+			alert("表创建成功:"+tablename);
 		},function(tx,error){
 			alert("表创建失败:"+tablename+" " +error.message);
 		});	
 	});
+	
 }
 
 
-function websqlInsertDataToTable(tablename,NAME,AGE,HEIGHT,WEIGHT){
-	var insertTableSQL='INSERT INTO ' + tablename + ' (NAME,AGE,HEIGHT,WEIGTH) VALUES (?,?,?,?)';
+function websqlInsertDataToTable(tablename,name,age,height,zhong){
+	var insertTableSQL='INSERT INTO ' + tablename + ' (name,age,height,weigth) VALUES (?,?,?,?)'
 	var ret = 0;
 	dataBase.transaction(function(ctx){
-		ctx.executeSql(insertTableSQL,[NAME,AGE,HEIGHT,WEIGHT],function (ctx,result){
-            console.log("插入" + tablename  + NAME + "成功");
-            //alert("插入成功");
+		ctx.executeSql(insertTableSQL,[name,age,height,zhong],function (ctx,result){
+            console.log("插入" + tablename  + name + "成功");
         },
         function (tx, error) {
             alert('插入失败: ' + error.message);
+            console.log(error.message);
             ret = 1;
         });
 	});
@@ -70,7 +72,7 @@ function websqlGetData(tablename,name){
 				console.log("NAME= "+result.rows.item(i).NAME);
 				console.log("AGE= "+result.rows.item(i).AGE);
 				console.log("HEIGHT= "+result.rows.item(i).HEIGHT);
-				console.log("WEIGHT= " + result.rows.item(i).WEIGHT);
+				console.log("WEIGHT= " + result.rows.item(i).WEIGTH);
 			}
 		},
 		function(tx,error){
@@ -88,14 +90,14 @@ function websqlGetAllData(tableName){
     var selectALLSQL = 'SELECT * FROM ' + tableName;
     dataBase.transaction(function (ctx) {
         ctx.executeSql(selectALLSQL,[],function (ctx,result){
-            alert('查询成功: ' + tableName + result.rows.length);
+            alert('查询成功: ' + tableName + " "+result.rows.length+"条");
             var len = result.rows.length;
             for(var i = 0;i < len;i++) {
-                console.log("NAME = "  + result.rows.item(i).name);
-                console.log("AGE = "  + result.rows.item(i).age);
-                console.log("HEIGHT = "  + result.rows.item(i).height);
-                console.log("WEIGTH = "  + result.rows.item(i).weight);
-                console.log("---------------------");
+                console.log("NAME = "  + result.rows.item(i).NAME);
+                console.log("AGE = "  + result.rows.item(i).AGE);
+                console.log("HEIGHT = "  + result.rows.item(i).HEIGHT);
+                console.log("WEIGHT = "  + result.rows.item(i).WEIGTH);
+                console.log("---------------------------");
             }
         },
         function (tx, error) {
@@ -113,9 +115,9 @@ function websqlDeleteAllDataFromTable(tablename){
 	localStorage.removeItem(tablename);
 	dataBase.transaction(function(ctx,result){
 		ctx.executeSql(deleteTableSQL,[],function(ctx,result){
-			alert("删除表成功"+tablename);
+			alert("删除表成功:"+tablename);
 		},function(tx,error){
-			alert("删除表失败"+tablename+error.message);
+			alert("删除表失败:"+tablename+error.message);
 		});
 	});
 }
